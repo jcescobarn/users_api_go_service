@@ -6,10 +6,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type UserRoutesInterface interface {
-	routes(routes *gin.Engine)
-}
-
 type UserRoutes struct {
 	userHandler *handlers.UserHandler
 }
