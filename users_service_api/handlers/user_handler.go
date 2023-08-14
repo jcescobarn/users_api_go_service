@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 	"users_service_api/entities"
@@ -10,14 +9,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 )
-
-type UserHandlerInterface interface {
-	Create(context *gin.Context)
-	GetAll(context *gin.Context)
-	GetByUsername(context *gin.Context)
-	Update(context *gin.Context)
-	Delete(context *gin.Context)
-}
 
 type UserHandler struct {
 	userRepository *repositories.UserRepository
@@ -40,30 +31,33 @@ func NewUserHandler(userRepository *repositories.UserRepository, utils *utils.Fu
 	return &UserHandler{userRepository: userRepository, utils: utils}
 }
 
-func (uh UserHandler) Create(context *gin.Context) {
+func (uh *UserHandler) Create(context *gin.Context) {
 	var request_body UserRequestBody
 	var err error
-	fmt.Println("Hola")
+
 	if err = context.ShouldBindJSON(&request_body); err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{"serror": err.Error()})
+		context.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
 	var user *entities.User = &entities.User{
 		Username: request_body.Username,
 		Name:     request_body.Name,
 		Password: request_body.Password,
 		Email:    request_body.Email,
 	}
+
 	var result error = uh.userRepository.Create(user)
 	if result != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"error": result})
 		return
 	}
+
 	context.JSON(http.StatusOK, gin.H{"message": "User Created", "user": user})
 	return
 }
 
-func (uh UserHandler) GetAll(context *gin.Context) {
+func (uh *UserHandler) GetAll(context *gin.Context) {
 	var users *[]entities.User
 	var err error
 
@@ -72,11 +66,12 @@ func (uh UserHandler) GetAll(context *gin.Context) {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err})
 		return
 	}
+
 	context.JSON(http.StatusOK, &users)
 	return
 }
 
-func (uh UserHandler) GetByUsername(context *gin.Context) {
+func (uh *UserHandler) GetByUsername(context *gin.Context) {
 	var username string
 	var err error
 	var user *entities.User
@@ -88,11 +83,12 @@ func (uh UserHandler) GetByUsername(context *gin.Context) {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err})
 		return
 	}
+
 	context.JSON(http.StatusOK, &user)
 	return
 }
 
-func (uh UserHandler) Update(context *gin.Context) {
+func (uh *UserHandler) Update(context *gin.Context) {
 	var username string
 	var err error
 	var user *entities.User
@@ -105,6 +101,7 @@ func (uh UserHandler) Update(context *gin.Context) {
 		context.JSON(http.StatusBadRequest, gin.H{"error": err})
 		return
 	}
+
 	context.BindJSON(&body)
 	if body.Email != "" {
 		user.Email = body.Email
@@ -126,7 +123,7 @@ func (uh UserHandler) Update(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{"message": "User updated", "user": modified_user})
 }
 
-func (uh UserHandler) Delete(context *gin.Context) {
+func (uh *UserHandler) Delete(context *gin.Context) {
 	var username string
 	var err error
 	var user *entities.User
