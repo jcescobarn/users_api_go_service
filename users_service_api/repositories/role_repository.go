@@ -44,7 +44,7 @@ func (rr *RoleRepository) GetByName(rolename string) (*entities.Role, error) {
 	var role *entities.Role
 	var result *gorm.DB
 
-	result = rr.db.DB.Where(" rolename = ?", rolename).First(&role)
+	result = rr.db.DB.Where(" role_name = ?", rolename).First(&role)
 	if result.Error != nil {
 		return nil, result.Error
 	}
@@ -54,7 +54,7 @@ func (rr *RoleRepository) GetByName(rolename string) (*entities.Role, error) {
 }
 
 func (rr *RoleRepository) Update(role *entities.Role) (*entities.Role, error) {
-	var modified_role *entities.Role
+	var modified_role *entities.Role = role
 	var result *gorm.DB
 
 	result = rr.db.DB.Model(&role).Save(modified_role)
