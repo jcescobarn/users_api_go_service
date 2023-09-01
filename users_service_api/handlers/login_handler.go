@@ -21,6 +21,10 @@ type LoginRequestBody struct {
 	Password string `json:"password"`
 }
 
+func NewLoginHandler(userRepository *repositories.UserRepository, utilsFunctions *utils.Functions) *LoginHandler {
+	return &LoginHandler{userRepository: userRepository, utilsFunctions: utilsFunctions}
+}
+
 func (rh *LoginHandler) Login(c *gin.Context) {
 	var body LoginRequestBody
 	if err := c.ShouldBindJSON(&body); err != nil {

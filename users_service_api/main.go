@@ -28,6 +28,8 @@ func main() {
 	var user_role_handler *handlers.UserRoleHandler
 	var user_role_routes *routes.UserRoleRoutes
 	var auth_middleware *middleware.AuthMiddleware
+	var login_handler *handlers.LoginHandler
+	var login_routes *routes.AuthRoutes
 
 	web_app = gin.Default()
 
@@ -59,6 +61,11 @@ func main() {
 	user_role_handler = handlers.NewUserRoleHandler(user_role_repository)
 	user_role_routes = routes.NewUserRoleRoutes(user_role_handler, auth_middleware)
 	user_role_routes.GetRoutes(web_app)
+
+	// Login Routes init
+	login_handler = handlers.NewLoginHandler(user_repository, utils)
+	login_routes = routes.NewAuthRoutes(login_handler)
+	login_routes.GetRoutes(web_app)
 
 	web_app.Run()
 
