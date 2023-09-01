@@ -9,6 +9,7 @@ type Role struct {
 	Id          uint
 	RoleName    string
 	Description string
+	UserPerRole []UserRoles
 }
 
 func (Role) TableName() string {
