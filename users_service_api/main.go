@@ -38,7 +38,7 @@ func main() {
 	utils := utils.NewFunctions()
 
 	// Run migrations
-	config_database.DB.AutoMigrate(&entities.User{}, &entities.Role{})
+	config_database.DB.AutoMigrate(&entities.User{}, &entities.Role{}, &entities.UserRoles{})
 
 	//Middleware init
 
