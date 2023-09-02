@@ -43,6 +43,7 @@ func main() {
 	config_database.DB.AutoMigrate(&entities.User{}, &entities.Role{}, &entities.UserRoles{})
 
 	//Middleware init
+	auth_middleware = middleware.NewAuthMiddleware()
 
 	// User routes init
 	user_repository = repositories.NewUserRepository(config_database, utils)
