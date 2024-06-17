@@ -1,4 +1,4 @@
-@Library('base_pipelines') 
+@Library('base_pipelines') _
 
 SonarScanPipeline(
     projectKey: 'user_service_api',
