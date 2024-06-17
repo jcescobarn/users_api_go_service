@@ -1,7 +1,7 @@
 @Library('base_pipelines') _
 
-SonarScanPipeline(
+SonarScanPipeline([
     projectKey: 'user_service_api',
     projectName: 'user_service_api',
     sourcePath: './'
-)
+])
